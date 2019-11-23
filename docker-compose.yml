@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  mq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    container_name: rabbit_mq
+  reader:
+    build:
+      context: .
+    container_name: rabbit_reader
+    environment:
+      MQ_HOST: mq
+      MQ_PORT: 5672
+      MQ_WR_QUEUE: "kek"
+      MQ_RD_QUEUE: "mem"
+      MQ_LOGIN: "guest"
+      MQ_PASSWORD: "guest"
