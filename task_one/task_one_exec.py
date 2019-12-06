@@ -1,5 +1,7 @@
 import logging
 
+import subprocess
+
 log = logging.getLogger(__name__)
 
 
@@ -12,9 +14,11 @@ class TaskOne(object):
         task_result = {}
 
         try:
-            ## YOUR ALGORITHM HERE
-
-            task_result["status"] = "Success"
+            exitCode = subprocess.call(["kuberctl apply -f composetest.yml"])
+            if int(exitCode):
+                task_result["status"] = "Error " + str(exitCode)
+            else:
+                task_result["status"] = "Success"
 
         except Exception as e:
             log.error("Error running task: {0}".format(task))
